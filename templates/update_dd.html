@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Daily Demand</title>
+    <link rel="stylesheet" href="../../static/assets/update.css">
+  </head>
+  <body>
+    <h1>Update a Daily Demand</h1>
+    <form action="/daily_demand/{{date}}/update" method="POST" id="update-daily_demand-form">
+      <div>
+        <label>Date:</label>
+        <input type="text" name="date" value="{{date}}" disabled required />
+      </div>
+      <div>
+        <label>Demand:</label>
+        <input type="number" name="demand" step="any" value="{{demand}}" />
+      </div>
+      <div>
+        <input type="submit" value="Submit" />
+      </div>
+    </form>
+  </body>
+</html>

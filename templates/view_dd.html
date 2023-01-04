@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Demand</title>
+    <link rel="stylesheet" href="../static/assets/view.css">
+  </head>
+  <body>
+    <h1 style="text-align: center">Daily Demand</h1>
+
+    {% if daily_demand_list | length == 0 %}
+        <p>No Daily Demands Found! Add the Demands now!</p>
+        <a href="/daily_demand/create" type="button">+ Add Daily Demand</a>
+    {% else %}
+    <table id="daily_demand-detail">
+      <thead>
+        <th>Date</th>
+        <th>Demand</th>
+        <th>Actions</th>
+      </thead>
+      {% for daily_demand in daily_demand_list %}
+      <tr>
+        <td>{{daily_demand["date"]}}</td>
+        <td>{{daily_demand["demand"]}}</td>
+        <td>
+            <a href="/daily_demand/{{daily_demand['date']}}/update" type="button">Update</a>
+            <a href="/daily_demand/{{daily_demand['date']}}/delete" type="button">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <a href="/daily_demand/create" type="button">+ Add Daily demand</a>
+    {% endif %}
+    <br>
+    <a href="/">Go Back to Home</a>
+  </body>
+</html>

@@ -966,6 +966,93 @@ def delete_dr(plant_id, date):
             "error.html"
         )
 
+@app.route("/daily_demand", methods = ["GET", "POST"])
+def view_dd():
+    dd_list = DailyDemand.query.all()
+    return render_template(
+        "view_dd.html",
+        daily_demand_list = dd_list
+    )
+
+@app.route("/daily_demand/create", methods = ["GET", "POST"])
+def create_dd():
+    if request.method == "GET":
+        return render_template("create_dd.html")
+    elif request.method == "POST":
+        date = request.form.get("date")
+        demand = request.form.get("demand")
+
+        data = DailyDemand(
+            date = date,
+            demand = demand
+        )
+
+        try:
+            db.session.add(data)
+        except:
+            db.session.rollback()
+            return render_template(
+                "exists.html",
+                x = "Demand Date"
+            )
+        else:
+            db.session.commit()
+            return redirect("/daily_demand")
+
+@app.route("/daily_demand/<date>/update", methods = ["GET", "POST"])
+def update_dd(date):
+    try:
+        date = str(date)
+        old_data = DailyDemand.query.get(date)
+
+        if request.method == "GET":
+            return render_template(
+                "update_dd.html",
+                date = old_data.date,
+                demand = old_data.demand
+            )
+        elif request.method == "POST":
+            u_demand = request.form.get("demand")
+
+            # Update data
+            old_data.demand = u_demand
+
+            try:
+                db.session.add(old_data)
+            except:
+                db.session.rollback()
+                return render_template(
+                    "error.html"
+                )
+            else:
+                db.session.commit()
+    except:
+        return render_template(
+            "error.html"
+        )
+    else:
+        return redirect("/daily_demand")
+
+@app.route("/daily_demand/<date>/delete", methods = ["GET", "POST"])
+def delete_dd(date):
+    try:
+        date = str(date)
+        data = DailyDemand.query.get(date)
+        try:
+            db.session.delete(data)
+        except:
+            return render_template(
+                "error.html"
+            )
+        else:
+            db.session.commit()
+            return redirect("/daily_demand")
+
+    except:
+        return render_template(
+            "error.html"
+        )
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
