@@ -353,10 +353,56 @@ def delete_sector(sector_id):
 @app.route("/organization", methods = ["GET", "POST"])
 def view_organization():
     org_list = Organizations.query.all()
+    org_data = []
+    for org in org_list:
+        data = {
+            "org_id": org["org_id"],
+            "org_name": org["org_name"],
+            "state": State.query.get(org["state_id"]),
+            "sector": Sector.query.get(org["sector_id"])
+        }
+        org_data.append(data)
+
+
     return render_template(
-        "view_org.html",
-        org_list = org_list
+        "view_organization.html",
+        org_data = org_data,
     )
+
+@app.route("/organization/create", methods = ["GET", "POST"])
+def create_organization():
+    if request.method == "GET":
+        state_list = State.query.all()
+        sector_list = Sector.query.all()
+        resource_list = Resource.query.all()
+        return render_template(
+            "create_organization.html",
+            state_list = state_list,
+            sector_list = sector_list,
+            resource_list = resource_list
+        )
+    elif request.method == "POST":
+        org_name = request.form.get("org_name")
+        state_id = request.form.get("state_select")
+        sector_id = request.form.get("sector_select")
+
+        data = Organizations(
+            org_name = org_name,
+            state_id = state_id,
+            sector_id = sector_id
+        )
+
+        try:
+            db.session.add(data)
+        except:
+            db.session.rollback()
+            return render_template(
+                "exists.html",
+                x = "Organization"
+            )
+        else:
+            db.session.commit()
+            return redirect("/organization")
 
 
 if __name__ == "__main__":
