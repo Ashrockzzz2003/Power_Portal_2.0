@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>States</title>
+    <link rel="stylesheet" href="../static/assets/view.css">
+  </head>
+  <body>
+    <h1 style="text-align: center">States</h1>
+
+    {% if state_list | length == 0 %}
+        <p>No States Found! Add the states now!</p>
+        <a href="/state/create" type="button">+ Add State</a>
+    {% else %}
+    <table id="state-detail">
+      <thead>
+        <th>State ID</th>
+        <th>State Name</th>
+        <th>State GDP Percapita</th>
+        <th>Actions</th>
+      </thead>
+      {% for state in state_list %}
+      <tr>
+        <td>{{state["state_id"]}}</td>
+        <td>{{state["state_name"]}}</td>
+        <td>{{state["gdp_state_percapita"]}}</td>
+        <td>
+            <a href="/state/{{state['state_id']}}/update" type="button">Update</a>
+            <a href="/state/{{state['state_id']}}/delete" type="button">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <a href="/state/create" type="button">+ Add State</a>
+    {% endif %}
+    <br>
+    <a href="/">Go Back to Home</a>
+  </body>
+</html>

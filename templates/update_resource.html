@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Resource</title>
+    <link rel="stylesheet" href="../../static/assets/create.css">
+  </head>
+  <body>
+    <h1>Update a Resource</h1>
+    <form action="/resource/{{resource_id}}/update" method="POST" id="update-resource-form">
+      <div>
+        <label>Resource Type:</label>
+        <input type="text" name="resource_type" value="{{resource_type}}" required />
+      </div>
+      <div>
+        <label>Resource Left:</label>
+        <input type="number" step="any" value="{{resource_left}}" name="resource_left" />
+      </div>
+      <div>
+        <input type="submit" value="Submit" />
+      </div>
+    </form>
+  </body>
+</html>

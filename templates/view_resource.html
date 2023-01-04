@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resources</title>
+    <link rel="stylesheet" href="../static/assets/view.css">
+  </head>
+  <body>
+    <h1 style="text-align: center">Resources</h1>
+
+    {% if resource_list | length == 0 %}
+        <p>No Resources Found! Add the resources now!</p>
+        <a href="/resource/create" type="button">+ Add Resource</a>
+    {% else %}
+    <table id="resource-detail">
+      <thead>
+        <th>Resource ID</th>
+        <th>Resource Type</th>
+        <th>Resource Left</th>
+        <th>Actions</th>
+      </thead>
+      {% for resource in resource_list %}
+      <tr>
+        <td>{{resource["resource_id"]}}</td>
+        <td>{{resource["resource_type"]}}</td>
+        <td>{{resource["resource_left"]}}</td>
+        <td>
+            <a href="/resource/{{resource['resource_id']}}/update" type="button">Update</a>
+            <a href="/resource/{{resource['resource_id']}}/delete" type="button">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <a href="/resource/create" type="button">+ Add Resource</a>
+    {% endif %}
+    <br>
+    <a href="/">Go Back to Home</a>
+  </body>
+</html>

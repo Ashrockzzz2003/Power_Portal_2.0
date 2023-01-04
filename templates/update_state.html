@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update State</title>
+    <link rel="stylesheet" href="../../static/assets/update.css">
+  </head>
+  <body>
+    <h1>Update a State</h1>
+    <form action="/state/{{state_id}}/update" method="POST" id="update-state-form">
+      <div>
+        <label>State Name:</label>
+        <input type="text" name="state_name" value="{{state_name}}" required />
+      </div>
+      <div>
+        <label>State GDP Percapita:</label>
+        <input type="text" name="gdp_state_percapita" value="{{gdp_state_percapita}}" />
+      </div>
+      <div>
+        <input type="submit" value="Submit" />
+      </div>
+    </form>
+  </body>
+</html>
