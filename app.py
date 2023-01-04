@@ -74,6 +74,20 @@ class Organizations(db.Model):
     state_id = db.Column(db.Integer, db.ForeignKey("states.state_id"), nullable = False)
     sector_id = db.Column(db.Integer, db.ForeignKey("sector.sector_id"), nullable = False)
 
+"""
+CREATE TABLE "org_resource" (
+	"org_id"	INTEGER NOT NULL,
+	"resource_id"	INTEGER NOT NULL,
+	FOREIGN KEY("org_id") REFERENCES "organization"("org_id"),
+	FOREIGN KEY("resource_id") REFERENCES "resources"("resource_id"),
+	PRIMARY KEY("org_id","resource_id")
+)
+"""
+class OrgResource(db.Model):
+    __tablename__ = "org_resource"
+    org_id = db.Column(db.Integer, db.ForeignKey("organizations.org_id"), primary_key = True, nullable = False)
+    resource_id = db.Column(db.Integer, db.ForeignKey("resources.resource_id"), primary_key = True, nullable = False)
+
 @app.route("/", methods = ["GET", "POST"])
 def index():
     return render_template(
@@ -366,7 +380,7 @@ def view_organization():
 
     return render_template(
         "view_organization.html",
-        org_data = org_data,
+        org_data = org_data
     )
 
 @app.route("/organization/create", methods = ["GET", "POST"])
@@ -374,12 +388,10 @@ def create_organization():
     if request.method == "GET":
         state_list = State.query.all()
         sector_list = Sector.query.all()
-        resource_list = Resource.query.all()
         return render_template(
             "create_organization.html",
             state_list = state_list,
-            sector_list = sector_list,
-            resource_list = resource_list
+            sector_list = sector_list
         )
     elif request.method == "POST":
         org_name = request.form.get("org_name")
@@ -404,6 +416,50 @@ def create_organization():
             db.session.commit()
             return redirect("/organization")
 
+
+@app.route("/organization/<int:org_id>/update", methods = ["GET", "POST"])
+def update_sector(org_id):
+    try:
+        org_id = int(org_id)
+        old_data = Organizations.query.get(org_id)
+        state_list = State.query.all()
+        sector_list = Sector.query.all()
+
+        if request.method == "GET":
+            return render_template(
+                "update_organization.html",
+                org_id = org_id,
+                org_name = old_data.org_name,
+                state_list = state_list,
+                sector_list = sector_list,
+                state_id = old_data.state_id,
+                sector_id = old_data.sector_id
+            )
+        elif request.method == "POST":
+            u_org_name = request.form.get("org_name")
+            u_state_id = request.form.get("state_select")
+            u_sector_id = request.form.get("sector_select")
+
+            # Update data
+            old_data.org_name = u_org_name
+            old_data.state_id = u_state_id
+            old_data.sector_id = u_sector_id
+
+            try:
+                db.session.add(old_data)
+            except:
+                db.session.rollback()
+                return render_template(
+                    "error.html"
+                )
+            else:
+                db.session.commit()
+    except:
+        return render_template(
+            "error.html"
+        )
+    else:
+        return redirect("/organization")
 
 if __name__ == "__main__":
     app.run(

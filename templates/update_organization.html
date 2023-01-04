@@ -4,11 +4,11 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create Organization</title>
-    <link rel="stylesheet" href="../static/assets/create.css">
+    <title>Update Organization</title>
+    <link rel="stylesheet" href="../../static/assets/create.css">
   </head>
   <body>
-    <h1>Add a new Organization</h1>
+    <h1>Update an Organization</h1>
     {% if state_list | length == 0 %}
         <p>No States Found! Add the states now!</p>
         <a href="/state/create" type="button">+ Add State</a>
@@ -16,16 +16,20 @@
         <p>No Sector Found! Add the Sectors now!</p>
         <a href="/sector/create" type="button">+ Add Sector</a>
     {% else %}
-        <form action="/organization/create" method="POST" id="create-organization-form">
+        <form action="/organization/<int:org_id>/update" method="POST" id="update-organization-form">
         <div>
             <label>Organization name:</label>
-            <input type="text" name="org_name" required />
+            <input type="text" name="org_name" value="{{org_name}}" required />
         </div>
         <div>
             <label>State:</label>
             <select name="state_select" required>
                 {% for state in state_list %}
-                    <option value="{{state['state_id']}}">{{state['state_name']}}</option>
+                    {% if state['state_id'] == state_id %}
+                        <option value="{{state['state_id']}}" selected>{{state['state_name']}}</option>
+                    {% else %}
+                        <option value="{{state['state_id']}}">{{state['state_name']}}</option>
+                    {% endif %}
                 {% endfor %}
             </select>
         </div>
@@ -33,7 +37,11 @@
             <label>Sector:</label>
             <select name="sector_select" required>
                 {% for sector in sector_list %}
-                    <option value="{{sector['sector_id']}}">{{sector['sector_name']}}</option>
+                    {% if sector['sector_id'] == sector_id %}
+                        <option value="{{sector['sector_id']}}" selected>{{sector['sector_name']}}</option>
+                    {% else %}
+                        <option value="{{sector['sector_id']}}">{{sector['sector_name']}}</option>
+                    {% endif %}
                 {% endfor %}
             </select>
         </div>
