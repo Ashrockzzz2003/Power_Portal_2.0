@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Region</title>
+    <link rel="stylesheet" href="../../static/assets/update.css">
+  </head>
+  <body>
+    <h1>Update a Region</h1>
+    <form action="/region/{{region_id}}/update" method="POST" id="update-region-form">
+      <div>
+        <label>Region Name:</label>
+        <input type="text" name="region_name" value="{{region_name}}" required />
+      </div>
+      <div>
+        <label>Death Count:</label>
+        <input type="number" name="death_count" value="{{death_count}}" />
+      </div>
+      <div>
+        <label>Allowed Pollution:</label>
+        <input type="number" name="allowed_pollution_level" value="{{allowed_pollution_level}}" />
+      </div>
+      <div>
+        <input type="submit" value="Submit" />
+      </div>
+    </form>
+  </body>
+</html>

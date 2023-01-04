@@ -88,6 +88,22 @@ class OrgResource(db.Model):
     org_id = db.Column(db.Integer, db.ForeignKey("organizations.org_id"), primary_key = True, nullable = False)
     resource_id = db.Column(db.Integer, db.ForeignKey("resources.resource_id"), primary_key = True, nullable = False)
 
+"""
+CREATE TABLE "region" (
+	"region_id"	INTEGER NOT NULL UNIQUE,
+	"region_name"	TEXT NOT NULL UNIQUE,
+	"death_count"	INTEGER NOT NULL,
+	"allowed_pollution_level"	REAL NOT NULL,
+	PRIMARY KEY("region_id" AUTOINCREMENT)
+)
+"""
+class Region(db.Model):
+    __tablename__ = "region"
+    region_id = db.Column(db.Integer, primary_key = True, nullable = False, unique = True, autoincrement = True)
+    region_name = db.Column(db.String, nullable = False, unique = True)
+    death_count = db.Column(db.Integer, nullable = False)
+    allowed_pollution_level = db.Column(db.Float, nullable = False)
+
 @app.route("/", methods = ["GET", "POST"])
 def index():
     return render_template(
@@ -475,6 +491,101 @@ def delete_org(org_id):
         else:
             db.session.commit()
             return redirect("/organization")
+
+    except:
+        return render_template(
+            "error.html"
+        )
+
+@app.route("/region", methods = ["GET", "POST"])
+def view_region():
+    region_list = Region.query.all()
+    return render_template(
+        "view_region.html",
+        region_list = region_list
+    )
+
+@app.route("/region/create", methods = ["GET", "POST"])
+def create_region():
+    if request.method == "GET":
+        return render_template("create_region.html")
+    elif request.method == "POST":
+        region_name = request.form.get("region_name")
+        death_count = request.form.get("death_count")
+        allowed_pollution_level = request.form.get("allowed_pollution_level")
+
+        data = Region(
+            region_name = region_name,
+            death_count = death_count,
+            allowed_pollution_level = allowed_pollution_level
+        )
+
+        try:
+            db.session.add(data)
+        except:
+            db.session.rollback()
+            return render_template(
+                "exists.html",
+                x = "Region"
+            )
+        else:
+            db.session.commit()
+            return redirect("/region")
+
+@app.route("/region/<int:region_id>/update", methods = ["GET", "POST"])
+def update_region(region_id):
+    try:
+        region_id = int(region_id)
+        old_data = Region.query.get(region_id)
+
+        if request.method == "GET":
+            return render_template(
+                "update_region.html",
+                region_id = region_id,
+                region_name = old_data.region_name,
+                death_count = old_data.death_count,
+                allowed_pollution_level = old_data.allowed_pollution_level
+            )
+        elif request.method == "POST":
+            u_region_name = request.form.get("region_name")
+            u_death_count = request.form.get("death_count")
+            u_allowed_pollution_level = request.form.get("allowed_pollution_level")
+
+            # Update data
+            old_data.region_name = u_region_name
+            old_data.death_count = u_death_count
+            old_data.allowed_pollution_level = u_allowed_pollution_level
+
+            try:
+                db.session.add(old_data)
+            except:
+                db.session.rollback()
+                return render_template(
+                    "error.html"
+                )
+            else:
+                db.session.commit()
+    except:
+        return render_template(
+            "error.html"
+        )
+    else:
+        return redirect("/region")
+
+@app.route("/region/<int:region_id>/delete", methods = ["GET", "POST"])
+def delete_region(region_id):
+    try:
+        region_id = int(region_id)
+        data = Region.query.get(region_id)
+        try:
+            db.session.delete(data)
+        except:
+            return render_template(
+                "error.html"
+            )
+        else:
+            db.session.commit()
+            return redirect("/region")
 
     except:
         return render_template(

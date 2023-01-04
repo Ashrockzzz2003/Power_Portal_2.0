@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Region</title>
+    <link rel="stylesheet" href="../static/assets/view.css">
+  </head>
+  <body>
+    <h1 style="text-align: center">Region</h1>
+
+    {% if region_list | length == 0 %}
+        <p>No Region Found! Add the Region now!</p>
+        <a href="/region/create" type="button">+ Add Region</a>
+    {% else %}
+    <table id="region-detail">
+      <thead>
+        <th>Region ID</th>
+        <th>Region Name</th>
+        <th>Death Count</th>
+        <th>Allowed Pollution</th>
+        <th>Actions</th>
+      </thead>
+      {% for region in region_list %}
+      <tr>
+        <td>{{region["region_id"]}}</td>
+        <td>{{region["region_name"]}}</td>
+        <td>{{region["death_count"]}}</td>
+        <td>{{region["allowed_pollution_level"]}}</td>
+        <td>
+            <a href="/region/{{region['region_id']}}/update" type="button">Update</a>
+            <a href="/region/{{region['region_id']}}/delete" type="button">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <a href="/region/create" type="button">+ Add Region</a>
+    {% endif %}
+    <br>
+    <a href="/">Go Back to Home</a>
+  </body>
+</html>
