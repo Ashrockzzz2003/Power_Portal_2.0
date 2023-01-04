@@ -844,6 +844,28 @@ def update_plant(plant_id):
     else:
         return redirect("/plant")
 
+@app.route("/plant/<int:plant_id>/delete", methods = ["GET", "POST"])
+def delete_plant(plant_id):
+    try:
+        plant_id = int(plant_id)
+        data = Plants.query.get(plant_id)
+        try:
+            db.session.delete(data)
+        except:
+            return render_template(
+                "error.html"
+            )
+        else:
+            db.session.commit()
+            return redirect("/plant")
+
+    except:
+        return render_template(
+            "error.html"
+        )
+
+
+
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
