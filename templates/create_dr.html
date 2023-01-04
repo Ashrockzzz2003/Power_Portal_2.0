@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Reading</title>
+    <link rel="stylesheet" href="../static/assets/create.css">
+  </head>
+  <body>
+    <h1>Add a new Reading</h1>
+    {% if plant_list | length == 0 %}
+        <p>No Plants Found! Add the Plants now!</p>
+        <a href="/plant/create" type="button">+ Add Plant</a>
+    {% else %}
+        <form action="/daily_reading/create" method="POST" id="create-dr-form">
+        <div>
+            <label>Date:</label>
+            <input type="text" name="date" required />
+        </div>
+        <div>
+            <label>Plant ID:</label>
+            <select name="plant_select" required>
+                {% for plant in plant_list %}
+                    <option value="{{plant['plant_id']}}">{{plant['plant_id']}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>Energy Generated:</label>
+            <input type="number" step="any" name="energy_generated">
+        </div>
+        <div>
+            <input type="submit" value="Submit" />
+        </div>
+        </form>
+    {% endif %}
+  </body>
+</html>

@@ -864,10 +864,111 @@ def delete_plant(plant_id):
             "error.html"
         )
 
+@app.route("/daily_reading", methods = ["GET", "POST"])
+def view_daily_reading():
+    reading_list = DailyReading.query.all()
+    return render_template(
+        "view_dr.html",
+        reading_list = reading_list
+    )
 
+@app.route("/daily_reading/create", methods = ["GET", "POST"])
+def create_dr():
+    if request.method == "GET":
+        plant_list = Plants.query.all()
+        return render_template(
+            "create_dr.html",
+            plant_list = plant_list
+        )
+    elif request.method == "POST":
+        plant_id = request.form.get("plant_select")
+        date = request.form.get("date")
+        energy_generated = request.form.get("energy_generated")
+
+        data = DailyReading(
+            plant_id = plant_id,
+            date = date,
+            energy_generated = energy_generated
+        )
+
+        try:
+            db.session.add(data)
+        except:
+            db.session.rollback()
+            return render_template(
+                "exists.html",
+                x = "Daily Reading"
+            )
+        else:
+            db.session.commit()
+            return redirect("/daily_reading")
+
+@app.route("/daily_reading/<int:plant_id>/<date>/update", methods = ["GET", "POST"])
+def update_dr(plant_id, date):
+    try:
+        plant_id = int(plant_id)
+        date = str(date)
+        old_data = DailyReading.query.get((plant_id, date))
+        plant_list = Plants.query.all()
+
+        if request.method == "GET":
+            return render_template(
+                "update_dr.html",
+                plant_list = plant_list,
+                plant_id = old_data.plant_id,
+                date = old_data.date,
+                energy_generated = old_data.energy_generated
+            )
+        elif request.method == "POST":
+            u_plant_id = request.form.get("plant_select")
+            u_date = request.form.get("date")
+            u_energy_generated = request.form.get("energy_generated")
+
+            # Update data
+            old_data.plant_id = u_plant_id
+            old_data.date = u_date
+            old_data.energy_generated = u_energy_generated
+
+            try:
+                db.session.add(old_data)
+            except:
+                db.session.rollback()
+                return render_template(
+                    "error.html"
+                )
+            else:
+                db.session.commit()
+    except:
+        return render_template(
+            "error.html"
+        )
+    else:
+        return redirect("/daily_reading")
+
+@app.route("/daily_reading/<int:plant_id>/<date>/delete", methods = ["GET", "POST"])
+def delete_dr(plant_id, date):
+    try:
+        plant_id = int(plant_id)
+        date = str(date)
+        data = Plants.query.get((plant_id, date))
+        try:
+            db.session.delete(data)
+        except:
+            return render_template(
+                "error.html"
+            )
+        else:
+            db.session.commit()
+            return redirect("/daily_reading")
+
+    except:
+        return render_template(
+            "error.html"
+        )
 
 if __name__ == "__main__":
     app.run(
         host='0.0.0.0',
-        debug=True
+        debug=True,
+        port=5000
     )

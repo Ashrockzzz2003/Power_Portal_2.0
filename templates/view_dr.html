@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daily Plant Reading</title>
+    <link rel="stylesheet" href="../static/assets/view.css">
+  </head>
+  <body>
+    <h1 style="text-align: center">Daily Readings</h1>
+
+    {% if reading_list | length == 0 %}
+        <p>No Readings Found! Add the Readings now!</p>
+        <a href="/daily_reading/create" type="button">+ Add Daily Reading</a>
+    {% else %}
+    <table id="dr-detail">
+      <thead>
+        <th>Date</th>
+        <th>Plant ID</th>
+        <th>Energy Generated</th>
+        <th>Actions</th>
+      </thead>
+      {% for reading in reading_list %}
+      <tr>
+        <td>{{reading["date"]}}</td>
+        <td>{{reading["plant_id"]}}</td>
+        <td>{{reading["energy_generated"]}}</td>
+        <td>
+            <a href="/daily_reading/{{reading['plant_id']}}/{{reading['date']}}/update" type="button">Update</a>
+            <a href="/daily_reading/{{reading['plant_id']}}/{{reading['date']}}/delete" type="button">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <a href="/daily_reading/create" type="button">+ Add Reading</a>
+    {% endif %}
+    <br>
+    <a href="/">Go Back to Home</a>
+  </body>
+</html>
