@@ -436,6 +436,23 @@ def delete_resource(resource_id):
     try:
         resource_id = int(resource_id)
         data = Resource.query.get(resource_id)
+        
+        # Flush out From child
+
+        plant_data = Plants.query.all()
+
+        for plant in plant_data:
+            if plant.resource_id == resource_id:
+                try:
+                    db.session.delete(plant)
+                except:
+                    return render_template(
+                        "error.html"
+                    )
+                else:
+                    db.session.commit()
+
+        # Flush data from parent
         try:
             db.session.delete(data)
         except:
@@ -522,6 +539,23 @@ def delete_sector(sector_id):
     try:
         sector_id = int(sector_id)
         data = Sector.query.get(sector_id)
+
+        # Flush out from child
+
+        org_data = Organizations.query.all()
+
+        for org in org_data:
+            if org.sector_id == sector_id:
+                try:
+                    db.session.delete(org)
+                except:
+                    return render_template(
+                        "error.html"
+                    )
+                else:
+                    db.session.commit()
+
+        # Flush out from parent
         try:
             db.session.delete(data)
         except:
@@ -639,6 +673,23 @@ def delete_org(org_id):
     try:
         org_id = int(org_id)
         data = Organizations.query.get(org_id)
+
+        # Flush from child
+
+        plant_data = Plants.query.all()
+
+        for plant in plant_data:
+            if plant.org_id == org_id:
+                try:
+                    db.session.delete(plant)
+                except:
+                    return render_template(
+                        "error.html"
+                    )
+                else:
+                    db.session.commit()
+
+        # Flush from parent
         try:
             db.session.delete(data)
         except:
@@ -734,6 +785,22 @@ def delete_region(region_id):
     try:
         region_id = int(region_id)
         data = Region.query.get(region_id)
+
+        # Flush from child
+        plant_data = Plants.query.all()
+
+        for plant in plant_data:
+            if plant.region_id == region_id:
+                try:
+                    db.session.delete(plant)
+                except:
+                    return render_template(
+                        "error.html"
+                    )
+                else:
+                    db.session.commit()
+
+        # Flush from parent
         try:
             db.session.delete(data)
         except:
@@ -884,6 +951,24 @@ def delete_plant(plant_id):
     try:
         plant_id = int(plant_id)
         data = Plants.query.get(plant_id)
+
+        # Flush from child
+
+        dr_data = DailyReading.query.all()
+
+        for dr in dr_data:
+            if dr.plant_id == plant_id:
+                try:
+                    db.session.delete(dr)
+                except:
+                    return render_template(
+                        "error.html"
+                    )
+                else:
+                    db.session.commit()
+
+        # Flush from parent
+
         try:
             db.session.delete(data)
         except:
