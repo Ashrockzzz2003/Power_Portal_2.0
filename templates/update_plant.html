@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Plant</title>
+    <link rel="stylesheet" href="../../static/assets/create.css">
+  </head>
+  <body>
+    <h1>Update a Plant</h1>
+    {% if resource_list | length == 0 %}
+        <p>No resources Found! Add resources now!</p>
+        <a href="/resource/create" type="button">+ Add Resource</a>
+    {% elif region_list | length == 0 %}
+        <p>No Regions Found! Add the Regions now!</p>
+        <a href="/region/create" type="button">+ Add Region</a>
+    {% elif organization_list | length == 0 %}
+        <p>No Organizations Found! Add the Organization now!</p>
+        <a href="/organization/create" type="button">+ Add Organization</a>
+    {% else %}
+        <form action="/plant/{{plant_id}}/update" method="POST" id="update-plant-form">
+        <div>
+            <label>Plant Status:</label>
+            <select name="status_select" required>
+                {% if plant_status == 'ACTIVE' %}
+                    <option value="ACTIVE" selected>ACTIVE</option>
+                    <option value="INACTIVE">INACTIVE</option>
+                {% else %} 
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="INACTIVE" selected>INACTIVE</option>
+                {% endif %}
+            </select>
+        </div>
+        <div>
+            <label>Spanned Area</label>
+            <input type="number" name="spanned_area" step="any" value="{{spanned_area}}" required>
+        </div>
+        <div>
+            <label>Production Cost</label>
+            <input type="number" name="production_cost" step="any" value="{{production_cost}}" required>
+        </div>
+        <div>
+            <label>Pollution Level</label>
+            <input type="number" name="pollution_level" step="any" value="{{pollution_level}}" required>
+        </div>
+        <div>
+            <label>Net Capacity</label>
+            <input type="number" name="net_capacity" step="any" value="{{net_capacity}}" required>
+        </div>
+        <div>
+            <label>Resource:</label>
+            <select name="resource_select" required>
+                {% for resource in resource_list %}
+                    {% if resource_id == resource['resource_id'] %}
+                        <option value="{{resource['resource_id']}}" selected>{{resource['resource_type']}}</option>
+                    {% else %}
+                        <option value="{{resource['resource_id']}}">{{resource['resource_type']}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>Organizaiton:</label>
+            <select name="org_select" required>
+                {% for org in organization_list %}
+                    {% if org_id == org['org_id'] %}
+                        <option value="{{org['org_id']}}" selected>{{org['org_name']}}</option>
+                    {% else %}
+                        <option value="{{org['org_id']}}">{{org['org_name']}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>Region:</label>
+            <select name="region_select" required>
+                {% for region in region_list %}
+                    {% if region_id == region['region_id'] %}
+                        <option value="{{region['region_id']}}" selected>{{region['region_name']}}</option>
+                    {% else %}
+                        <option value="{{region['region_id']}}">{{region['region_name']}}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <input type="submit" value="Submit" />
+        </div>
+        </form>
+    {% endif %}
+  </body>
+</html>

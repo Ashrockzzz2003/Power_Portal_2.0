@@ -27,17 +27,17 @@
         <th>Region</th>
         <th>Actions</th>
       </thead>
-      {% for organization in org_data %}
+      {% for plant in plant_data %}
       <tr>
-        <td>{{plant_data["plant_id"]}}</td>
-        <td>{{plant_data["plant_status"]}}</td>
-        <td>{{plant_data["spanned_area"]}}</td>
-        <td>{{plant_data["production_cost"]}}</td>
-        <td>{{plant_data["pollution_level"]}}</td>
-        <td>{{plant_data["net_capacity"]}}</td>
-        <td>{{(plant_data["resource"]).resource_type}}</td>
-        <td>{{(plant_data["org"]).org_name}}</td>
-        <td>{{(plant_data["region"]).region_name}}</td>
+        <td>{{plant["plant_id"]}}</td>
+        <td>{{plant["plant_status"]}}</td>
+        <td>{{plant["spanned_area"]}}</td>
+        <td>{{plant["production_cost"]}}</td>
+        <td>{{plant["pollution_level"]}}</td>
+        <td>{{plant["net_capacity"]}}</td>
+        <td>{{(plant["resource"]).resource_type}}</td>
+        <td>{{(plant["org"]).org_name}}</td>
+        <td>{{(plant["region"]).region_name}}</td>
         <td>
             <a href="/plant/{{plant['plant_id']}}/update" type="button">Update</a>
             <a href="/plant/{{plant['plant_id']}}/delete" type="button">Delete</a>

@@ -63,7 +63,7 @@
             <label>Region:</label>
             <select name="region_select" required>
                 {% for region in region_list %}
-                    <option value="{{region['region_id']}}">{{region['region_type']}}</option>
+                    <option value="{{region['region_id']}}">{{region['region_name']}}</option>
                 {% endfor %}
             </select>
         </div>

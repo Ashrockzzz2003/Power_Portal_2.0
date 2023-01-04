@@ -131,8 +131,8 @@ class Plants(db.Model):
     pollution_level = db.Column(db.Float, nullable = False)
     net_capacity = db.Column(db.Float, nullable = False)
     resource_id = db.Column(db.Integer, db.ForeignKey("resources.resource_id"), nullable = False)
-    region_id = db.Column(db.Integer, db.ForeignKey("regions.region_id"), nullable = False)
-    org_id = db.Column(db.Integer, db.ForeignKey("organizations.org_id"), nullable = False)
+    region_id = db.Column(db.Integer, db.ForeignKey("region.region_id"), nullable = False)
+    org_id = db.Column(db.Integer, db.ForeignKey("organization.org_id"), nullable = False)
 
 """
 CREATE TABLE "daily_demand" (
@@ -159,7 +159,7 @@ class DailyReading(db.Model):
     __tablename__ = "daily_reading"
     plant_id = db.Column(db.Integer, db.ForeignKey("plant.plant_id"), primary_key = True, nullable = False)
     date = db.Column(db.String, primary_key = True, nullable = False)
-    energy_generated = db.Column(db.Real, nullable = False)
+    energy_generated = db.Column(db.Float, nullable = False)
 
 
 @app.route("/", methods = ["GET", "POST"])
@@ -722,7 +722,7 @@ def view_plant():
         data = {
             "plant_id": plant.plant_id,
             "plant_status": plant.plant_status,
-            "spaaned_area": plant.spanned_area,
+            "spanned_area": plant.spanned_area,
             "production_cost": plant.production_cost,
             "pollution_level": plant.pollution_level,
             "net_capacity": plant.net_capacity,
@@ -751,7 +751,7 @@ def create_plant():
             region_list = region_list
         )
     elif request.method == "POST":
-        plant_status = request.form.get("plant_status")
+        plant_status = request.form.get("status_select")
         spanned_area = request.form.get("spanned_area")
         production_cost = request.form.get("production_cost")
         pollution_level = request.form.get("pollution_level")
@@ -782,6 +782,67 @@ def create_plant():
         else:
             db.session.commit()
             return redirect("/plant")
+
+@app.route("/plant/<int:plant_id>/update", methods = ["GET", "POST"])
+def update_plant(plant_id):
+    try:
+        plant_id = int(plant_id)
+        old_data = Plants.query.get(plant_id)
+        resource_list = Resource.query.all()
+        organization_list = Organizations.query.all()
+        region_list = Region.query.all()
+
+        if request.method == "GET":
+            return render_template(
+                "update_plant.html",
+                plant_id = plant_id,
+                plant_status = old_data.plant_status,
+                spanned_area = old_data.spanned_area,
+                production_cost = old_data.production_cost,
+                pollution_level = old_data.pollution_level,
+                net_capacity = old_data.net_capacity,
+                org_id = old_data.org_id,
+                resource_id = old_data.resource_id,
+                region_id = old_data.region_id,
+                resource_list = resource_list,
+                organization_list = organization_list,
+                region_list = region_list
+            )
+        elif request.method == "POST":
+            u_plant_status = request.form.get("status_select")
+            u_spanned_area = request.form.get("spanned_area")
+            u_production_cost = request.form.get("production_cost")
+            u_pollution_level = request.form.get("pollution_level")
+            u_net_capacity = request.form.get("net_capacity")
+            u_resource_id = request.form.get("resource_select")
+            u_org_id = request.form.get("org_select")
+            u_region_id = request.form.get("region_select")
+
+            # Update data
+            old_data.plant_status = u_plant_status
+            old_data.spanned_area = u_spanned_area
+            old_data.production_cost = u_production_cost
+            old_data.pollution_level = u_pollution_level
+            old_data.net_capacity = u_net_capacity
+            old_data.resource_id = u_resource_id
+            old_data.org_id = u_org_id
+            old_data.region_id = u_region_id
+
+            try:
+                db.session.add(old_data)
+            except:
+                db.session.rollback()
+                return render_template(
+                    "error.html"
+                )
+            else:
+                db.session.commit()
+    except:
+        return render_template(
+            "error.html"
+        )
+    else:
+        return redirect("/plant")
 
 if __name__ == "__main__":
     app.run(
