@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sectors</title>
+    <link rel="stylesheet" href="../static/assets/view.css">
+  </head>
+  <body>
+    <h1 style="text-align: center">Sectors</h1>
+
+    {% if sector_list | length == 0 %}
+        <p>No Sectors Found! Add the sectors now!</p>
+        <a href="/sector/create" type="button">+ Add Sector</a>
+    {% else %}
+    <table id="sector-detail">
+      <thead>
+        <th>Sector ID</th>
+        <th>Sector Name</th>
+        <th>Actions</th>
+      </thead>
+      {% for sector in sector_list %}
+      <tr>
+        <td>{{sector["sector_id"]}}</td>
+        <td>{{sector["sector_name"]}}</td>
+        <td>
+            <a href="/sector/{{sector['sector_id']}}/update" type="button">Update</a>
+            <a href="/sector/{{sector['sector_id']}}/delete" type="button">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <a href="/sector/create" type="button">+ Add Sector</a>
+    {% endif %}
+    <br>
+    <a href="/">Go Back to Home</a>
+  </body>
+</html>

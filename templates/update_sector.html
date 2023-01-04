@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update sector</title>
+    <link rel="stylesheet" href="../../static/assets/update.css">
+  </head>
+  <body>
+    <h1>Update a sector</h1>
+    <form action="/sector/{{sector_id}}/update" method="POST" id="update-sector-form">
+      <div>
+        <label>sector Name:</label>
+        <input type="text" name="sector_name" value="{{sector_name}}" required />
+      </div>
+      
+      <div>
+        <input type="submit" value="Submit" />
+      </div>
+    </form>
+  </body>
+</html>

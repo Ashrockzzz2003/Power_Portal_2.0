@@ -16,6 +16,7 @@ db = SQLAlchemy()
 db.init_app(app)
 app.app_context().push()
 
+
 """
 CREATE TABLE "states" (
 	"state_id"	INTEGER NOT NULL UNIQUE,
@@ -263,6 +264,11 @@ def delete_resource(resource_id):
         return render_template(
             "error.html"
         )
+
+@app.route("/sector", methods = ["GET", "POST"])
+def view_sector():
+    
+    return
 
 @app.route("/organization", methods = ["GET", "POST"])
 def view_organization():
