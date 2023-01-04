@@ -232,6 +232,24 @@ def index():
         nuclear_data = nuclear_data
     )
 
+@app.route("/login", methods = ["GET", "POST"])
+def login():
+    if request.method == "GET":
+        return render_template(
+            "login.html"
+        )
+    elif request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+
+        if username == "admin" and password == "nppadmin":
+            return redirect("/state")
+        else:
+            return render_template(
+                "login.html",
+                alert = True
+            )
+
 @app.route("/state", methods = ["GET"])
 def view_state():
     state_list = State.query.all()
