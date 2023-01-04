@@ -27,8 +27,8 @@
       <tr>
         <td>{{organization["org_id"]}}</td>
         <td>{{organization["org_name"]}}</td>
-        <td>{{organization["state"].state_name}}</td>
-        <td>{{organization["sector"].sector_name}}</td>
+        <td>{{(organization["state"]).state_name}}</td>
+        <td>{{(organization["sector"]).sector_name}}</td>
         <td>
             <a href="/organization/{{organization['org_id']}}/update" type="button">Update</a>
             <a href="/organization/{{organization['org_id']}}/delete" type="button">Delete</a>

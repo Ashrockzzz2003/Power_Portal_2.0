@@ -68,7 +68,7 @@ CREATE TABLE "organization" (
 )
 """
 class Organizations(db.Model):
-    __tablename__ = "organizations"
+    __tablename__ = "organization"
     org_id = db.Column(db.Integer, autoincrement = True, primary_key = True, unique = True, nullable = False)
     org_name = db.Column(db.String, nullable = False, unique = True)
     state_id = db.Column(db.Integer, db.ForeignKey("states.state_id"), nullable = False)
@@ -370,10 +370,10 @@ def view_organization():
     org_data = []
     for org in org_list:
         data = {
-            "org_id": org["org_id"],
-            "org_name": org["org_name"],
-            "state": State.query.get(org["state_id"]),
-            "sector": Sector.query.get(org["sector_id"])
+            "org_id": org.org_id,
+            "org_name": org.org_name,
+            "state": State.query.get(org.state_id),
+            "sector": Sector.query.get(org.sector_id)
         }
         org_data.append(data)
 
@@ -418,7 +418,7 @@ def create_organization():
 
 
 @app.route("/organization/<int:org_id>/update", methods = ["GET", "POST"])
-def update_sector(org_id):
+def update_organization(org_id):
     try:
         org_id = int(org_id)
         old_data = Organizations.query.get(org_id)
@@ -460,6 +460,26 @@ def update_sector(org_id):
         )
     else:
         return redirect("/organization")
+
+@app.route("/organization/<int:org_id>/delete", methods = ["GET", "POST"])
+def delete_org(org_id):
+    try:
+        org_id = int(org_id)
+        data = Organizations.query.get(org_id)
+        try:
+            db.session.delete(data)
+        except:
+            return render_template(
+                "error.html"
+            )
+        else:
+            db.session.commit()
+            return redirect("/organization")
+
+    except:
+        return render_template(
+            "error.html"
+        )
 
 if __name__ == "__main__":
     app.run(

@@ -12,11 +12,11 @@
     {% if state_list | length == 0 %}
         <p>No States Found! Add the states now!</p>
         <a href="/state/create" type="button">+ Add State</a>
-    {% elif setor_list | length == 0 %}
+    {% elif sector_list | length == 0 %}
         <p>No Sector Found! Add the Sectors now!</p>
         <a href="/sector/create" type="button">+ Add Sector</a>
     {% else %}
-        <form action="/organization/<int:org_id>/update" method="POST" id="update-organization-form">
+        <form action="/organization/{{org_id}}/update" method="POST" id="update-organization-form">
         <div>
             <label>Organization name:</label>
             <input type="text" name="org_name" value="{{org_name}}" required />

@@ -15,12 +15,17 @@ form{
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 
-input{
+input, select{
+    width: 90%;
     font-family: 'Poppins', sans-serif;
     padding: 5px;
     margin: 5px;
     border-radius: 4px;
     border: 0.5px grey solid;
+}
+
+input[type=submit]{
+    margin-top: 20px;
 }
 
 label{
