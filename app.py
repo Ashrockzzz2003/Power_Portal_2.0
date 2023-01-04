@@ -320,12 +320,29 @@ def update_state(state_id):
     else:
         return redirect("/state")
 
-# Pending
+# Done
 @app.route("/state/<int:state_id>/delete")
-def delete_student(state_id):
+def delete_state(state_id):
     try:
         state_id = int(state_id)
         data = State.query.get(state_id)
+
+        # Flush From Organization
+
+        org_data = Organizations.query.all()
+
+        for org in org_data:
+            if org.state_id == state_id:
+                try:
+                    db.session.delete(org)
+                except:
+                    return render_template(
+                        "error.html"
+                    )
+                else:
+                    db.session.commit()
+
+        # Flush from parent
         try:
             db.session.delete(data)
         except:
