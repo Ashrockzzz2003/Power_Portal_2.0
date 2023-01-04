@@ -3,6 +3,7 @@ from flask import render_template
 from flask import request
 from flask_sqlalchemy import SQLAlchemy
 import os
+import random
 
 # Get Directory for db
 current_dir = os.path.abspath(os.path.dirname(__file__))
@@ -106,8 +107,72 @@ class Region(db.Model):
 
 @app.route("/", methods = ["GET", "POST"])
 def index():
+    source = [
+        ["State_id", "State", "Capacity(MW)"],
+        ['IN-AP', 'Andhra Pradesh'],
+        ['IN-AR', 'Arunachal Pradesh'],
+        ['IN-AS', 'Assam'],
+        ['IN-BR', 'Bihar'],
+        ['IN-CG', 'Chhattisgarh'],
+        ['IN-GA', 'Goa'],
+        ['IN-GJ', 'Gujarat'],
+        ['IN-HR', 'Haryana'],
+        ['IN-HP', 'Himachal Pradesh'],
+        ['IN-JK', 'Jammu and Kashmir'],
+        ['IN-JH', 'Jharkhand'],
+        ['IN-KA', 'Karnataka'],
+        ['IN-KL', 'Kerala'],
+        ['IN-MP', 'Madhya Pradesh'],
+        ['IN-MH', 'Maharashtra'],
+        ['IN-MN', 'Manipur'],
+        ['IN-ML', 'Meghalaya'],
+        ['IN-MZ', 'Mizoram'],
+        ['IN-NL', 'Nagaland'],
+        ['IN-OD', 'Odisha'],
+        ['IN-PB', 'Punjab'],
+        ['IN-RJ', 'Rajasthan'],
+        ['IN-SK', 'Sikkim'],
+        ['IN-TN', 'Tamil Nadu'],
+        ['IN-TS', 'Telangana'],
+        ['IN-TR', 'Tripura'],
+        ['IN-UK', 'Uttarakhand'],
+        ['IN-UP', 'Uttar Pradesh'],
+        ['IN-WB', 'West Bengal'],
+        ['IN-AN', 'Andaman and Nicobar Islands'],
+        ['IN-CH', 'Chandigarh'],
+        ['IN-DN', 'Dadra and Nagar Haveli'],
+        ['IN-DD', 'Daman and Diu'],
+        ['IN-LD', 'Lakshadweep'],
+        ['IN-DL', 'National Capital Territory of Delhi'],
+        ['IN-PY', 'Puducherry']
+    ]
+
+    for i in range(1, len(source)):
+        source[i].append(random.randint(1500, 12000))
+    
+    resource_data = [["Type", "Capacity(MW)"]]
+    resource_list = Resource.query.all()
+
+    for resource in resource_list:
+        resource_data.append([resource.resource_type, random.randint(5000, 20000)])
+    
+    hydro_data = []
+    for i in range(1947, 2022):
+        hydro_data.append([i, random.randint(1, 100)])
+    thermal_data = []
+    for i in range(1947, 2022):
+        thermal_data.append([i, random.randint(1, 100)])
+    nuclear_data = []
+    for i in range(1947, 2022):
+        nuclear_data.append([i, random.randint(11, 100)])
+
     return render_template(
-        "index.html"
+        "index.html",
+        source = source,
+        resource_data = resource_data,
+        hydro_data = hydro_data,
+        thermal_data = thermal_data,
+        nuclear_data = nuclear_data
     )
 
 @app.route("/state", methods = ["GET"])

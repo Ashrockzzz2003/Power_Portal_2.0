@@ -9,7 +9,7 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
-    <link rel="stylesheet" type="text/css" href="../static/index.css" />
+    <link rel="stylesheet" type="text/css" href="../static/assets/index.css" />
 
     <!--Google Charts-->
     <script
@@ -23,30 +23,9 @@
       google.charts.setOnLoadCallback(drawRegionsMap);
 
       function drawRegionsMap() {
-        var data = google.visualization.arrayToDataTable([
-          ["State_id", "State", "Capacity(MW)"],
-          ["IN-AR", "Arunachal Pradesh", 34],
-          ["IN-AS", "Assam", 13],
-          ["IN-BR", "Bihar", 65],
-          ["IN-CH", "Chandigarh", 15],
-          ["IN-CT", "Chhattisgarh", 34],
-          ["IN-DN", "Dadra and Nagar Haveli", 34],
-          ["IN-DD", "Daman and Diu", 45],
-          ["IN-DL", "Delhi", 34],
-          ["IN-GA", "Goa", 76],
-          ["IN-GJ", "Gujarat", 34],
-          ["IN-HR", "Haryana", 14],
-          ["IN-HP", "Himachal Pradesh", 75],
-          ["IN-JK", "Jammu and Kashmir", 34],
-          ["IN-JH", "Jharkhand", 34],
-          ["IN-KA", "Karnataka", 26],
-          ["IN-KL", "Kerala", 4],
-          ["IN-LA", "Ladakh", 16],
-          ["IN-TN", "Tamil Nadu", 34],
-          ["IN-TG", "Telangana", 34],
-          ["IN-TR", "Tripura", 34],
-          ["IN-UP", "Uttar Pradesh", 34],
-        ]);
+        var data = google.visualization.arrayToDataTable({{
+            source | safe
+        }});
 
         var options = {
           region: "IN",
@@ -66,6 +45,7 @@
       google.charts.setOnLoadCallback(drawChart);
       function drawChart() {
         var data = google.visualization.arrayToDataTable(
+            {{resource_data | safe}}
         );
 
         var options = {
@@ -91,8 +71,8 @@
         var data = google.visualization.arrayToDataTable([
           ["Demand(MW)", "Capacity"],
           ["Peak Requirement", 174153.0],
-          ["Peak Demand Met", 172820.0],
-          ["Shortage/Surplus", 1333.0],
+          ["Peak Demand Met", 151820.0],
+          ["Shortage/Surplus", (174153-151820)],
         ]);
 
         var options = {
@@ -124,6 +104,7 @@
       data.addColumn("number", "Installed Capacity (MW)");
 
       data.addRows(
+        {{hydro_data | safe}}
       );
 
       var options = {
@@ -162,6 +143,7 @@
         data.addColumn("number", "Installed Capacity (MW)");
 
         data.addRows(
+            {{thermal_data | safe}}
         );
 
         var options = {
@@ -200,6 +182,7 @@
         data.addColumn("number", "Installed Capacity (MW)");
 
         data.addRows(
+            {{nuclear_data | safe}}
         );
 
         var options = {
@@ -235,17 +218,18 @@
           <a href="/"> <i class="material-icons">bolt</i>Power Portal </a>
         </div>
         <li><a href="/">Home</a></li>
-        <li><a href="/add_data">Add Data</a></li>
       </ul>
     </nav>
 
     <div class="container">
       <div class="chip_list">
-        {% for resource in resource_list %}
-            <div class="chip_item">
-                <h3>{{resource['resource_type']}}</h3>
-                <p>{{ resource['capacity']}} MW</p>
-            </div>
+        {% for resource in resource_data %}
+            {% if resource[0] != 'Type' %}
+                <div class="chip_item">
+                        <h3>{{resource[0]}}</h3>
+                        <p>{{resource[1]}} MW</p>
+                </div>
+            {% endif %}
         {% endfor %}
       </div>
 
