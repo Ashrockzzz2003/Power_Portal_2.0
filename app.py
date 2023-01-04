@@ -105,6 +105,63 @@ class Region(db.Model):
     death_count = db.Column(db.Integer, nullable = False)
     allowed_pollution_level = db.Column(db.Float, nullable = False)
 
+"""
+CREATE TABLE "plant" (
+	"plant_id"	INTEGER NOT NULL UNIQUE,
+	"plant_status"	TEXT NOT NULL CHECK("plant_status" IN ('ACTIVE', 'INACTIVE')),
+	"spanned_area"	REAL NOT NULL,
+	"production_cost"	REAL NOT NULL,
+	"pollution_level"	REAL NOT NULL,
+	"net_capacity"	REAL NOT NULL,
+	"resource_id"	INTEGER NOT NULL,
+	"org_id"	INTEGER NOT NULL,
+	"region_id"	INTEGER NOT NULL,
+	PRIMARY KEY("plant_id" AUTOINCREMENT),
+	FOREIGN KEY("region_id") REFERENCES "region"("region_id"),
+	FOREIGN KEY("org_id") REFERENCES "organization"("org_id"),
+	FOREIGN KEY("resource_id") REFERENCES "resources"("resource_id")
+)
+"""
+class Plants(db.Model):
+    __tablename__ = "plant"
+    plant_id = db.Column(db.Integer, autoincrement = True, primary_key = True, unique = True, nullable = False)
+    plant_status = db.Column(db.String, nullable = False)
+    spanned_area = db.Column(db.Float, nullable = False)
+    production_cost = db.Column(db.Float, nullable = False)
+    pollution_level = db.Column(db.Float, nullable = False)
+    net_capacity = db.Column(db.Float, nullable = False)
+    resource_id = db.Column(db.Integer, db.ForeignKey("resources.resource_id"), nullable = False)
+    region_id = db.Column(db.Integer, db.ForeignKey("regions.region_id"), nullable = False)
+    org_id = db.Column(db.Integer, db.ForeignKey("organizations.org_id"), nullable = False)
+
+"""
+CREATE TABLE "daily_demand" (
+	"date"	TEXT NOT NULL UNIQUE,
+	"demand"	REAL NOT NULL,
+	PRIMARY KEY("date")
+)
+"""
+class DailyDemand(db.Model):
+    __tablename__ = "daily_demand"
+    date = db.Column(db.String, primary_key = True, nullable = False, unique = True)
+    demand = db.Column(db.Float, nullable = False)
+
+"""
+CREATE TABLE "daily_reading" (
+	"plant_id"	INTEGER NOT NULL,
+	"date"	TEXT NOT NULL,
+	"energy_generated"	REAL NOT NULL,
+	FOREIGN KEY("plant_id") REFERENCES "plant"("plant_id"),
+	PRIMARY KEY("plant_id","date")
+)
+"""
+class DailyReading(db.Model):
+    __tablename__ = "daily_reading"
+    plant_id = db.Column(db.Integer, db.ForeignKey("plant.plant_id"), primary_key = True, nullable = False)
+    date = db.Column(db.String, primary_key = True, nullable = False)
+    energy_generated = db.Column(db.Real, nullable = False)
+
+
 @app.route("/", methods = ["GET", "POST"])
 def index():
     source = [
@@ -656,6 +713,75 @@ def delete_region(region_id):
         return render_template(
             "error.html"
         )
+
+@app.route("/plant", methods = ["GET", "POST"])
+def view_plant():
+    plant_list = Plants.query.all()
+    plant_data = []
+    for plant in plant_list:
+        data = {
+            "plant_id": plant.plant_id,
+            "plant_status": plant.plant_status,
+            "spaaned_area": plant.spanned_area,
+            "production_cost": plant.production_cost,
+            "pollution_level": plant.pollution_level,
+            "net_capacity": plant.net_capacity,
+            "resource": Resource.query.get(plant.resource_id),
+            "org": Organizations.query.get(plant.org_id),
+            "region": Region.query.get(plant.region_id)
+        }
+        plant_data.append(data)
+
+
+    return render_template(
+        "view_plant.html",
+        plant_data = plant_data
+    )
+
+@app.route("/plant/create", methods = ["GET", "POST"])
+def create_plant():
+    if request.method == "GET":
+        resource_list = Resource.query.all()
+        org_list = Organizations.query.all()
+        region_list = Region.query.all()
+        return render_template(
+            "create_plant.html",
+            resource_list = resource_list,
+            org_list = org_list,
+            region_list = region_list
+        )
+    elif request.method == "POST":
+        plant_status = request.form.get("plant_status")
+        spanned_area = request.form.get("spanned_area")
+        production_cost = request.form.get("production_cost")
+        pollution_level = request.form.get("pollution_level")
+        net_capacity = request.form.get("net_capacity")
+        resource_id = request.form.get("resource_select")
+        org_id = request.form.get("org_select")
+        region_id = request.form.get("region_select")
+
+        data = Plants(
+            plant_status = plant_status,
+            spanned_area = spanned_area,
+            production_cost = production_cost,
+            pollution_level = pollution_level,
+            net_capacity = net_capacity,
+            resource_id = resource_id,
+            org_id = org_id,
+            region_id = region_id
+        )
+
+        try:
+            db.session.add(data)
+        except:
+            db.session.rollback()
+            return render_template(
+                "exists.html",
+                x = "plant"
+            )
+        else:
+            db.session.commit()
+            return redirect("/plant")
 
 if __name__ == "__main__":
     app.run(

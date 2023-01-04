@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Plant</title>
+    <link rel="stylesheet" href="../static/assets/create.css">
+  </head>
+  <body>
+    <h1>Add a new Plant</h1>
+    {% if resource_list | length == 0 %}
+        <p>No resources Found! Add resources now!</p>
+        <a href="/resource/create" type="button">+ Add Resource</a>
+    {% elif region_list | length == 0 %}
+        <p>No Regions Found! Add the Regions now!</p>
+        <a href="/region/create" type="button">+ Add Region</a>
+    {% elif org_list | length == 0 %}
+        <p>No Organizations Found! Add the Organization now!</p>
+        <a href="/organization/create" type="button">+ Add Organization</a>
+    {% else %}
+        <form action="/plant/create" method="POST" id="create-plant-form">
+        <div>
+            <label>Plant Status:</label>
+            <select name="status_select" required>
+                <option value="ACTIVE">ACTIVE</option>
+                <option value="INACTIVE">INACTIVE</option>
+            </select>
+        </div>
+        <div>
+            <label>Spanned Area</label>
+            <input type="number" name="spanned_area" step="any" required>
+        </div>
+        <div>
+            <label>Production Cost</label>
+            <input type="number" name="production_cost" step="any" required>
+        </div>
+        <div>
+            <label>Pollution Level</label>
+            <input type="number" name="pollution_level" step="any" required>
+        </div>
+        <div>
+            <label>Net Capacity</label>
+            <input type="number" name="net_capacity" step="any" required>
+        </div>
+        <div>
+            <label>Resource:</label>
+            <select name="resource_select" required>
+                {% for resource in resource_list %}
+                    <option value="{{resource['resource_id']}}">{{resource['resource_type']}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>Organizaiton:</label>
+            <select name="org_select" required>
+                {% for org in org_list %}
+                    <option value="{{org['org_id']}}">{{org['org_name']}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label>Region:</label>
+            <select name="region_select" required>
+                {% for region in region_list %}
+                    <option value="{{region['region_id']}}">{{region['region_type']}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <input type="submit" value="Submit" />
+        </div>
+        </form>
+    {% endif %}
+  </body>
+</html>

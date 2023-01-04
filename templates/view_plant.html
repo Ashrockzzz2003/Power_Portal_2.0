@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plants</title>
+    <link rel="stylesheet" href="../static/assets/view.css">
+  </head>
+  <body>
+    <h1 style="text-align: center">Plants</h1>
+
+    {% if plant_data | length == 0 %}
+        <p>No Plants Found! Add the plants now!</p>
+        <a href="/plant/create" type="button">+ Add Plant</a>
+    {% else %}
+    <table id="plant-detail">
+      <thead>
+        <th>Plant ID</th>
+        <th>Plant Status</th>
+        <th>Spanned Area</th>
+        <th>Production Cost</th>
+        <th>Pollution Level</th>
+        <th>Net Capacity</th>
+        <th>Resource</th>
+        <th>Organization</th>
+        <th>Region</th>
+        <th>Actions</th>
+      </thead>
+      {% for organization in org_data %}
+      <tr>
+        <td>{{plant_data["plant_id"]}}</td>
+        <td>{{plant_data["plant_status"]}}</td>
+        <td>{{plant_data["spanned_area"]}}</td>
+        <td>{{plant_data["production_cost"]}}</td>
+        <td>{{plant_data["pollution_level"]}}</td>
+        <td>{{plant_data["net_capacity"]}}</td>
+        <td>{{(plant_data["resource"]).resource_type}}</td>
+        <td>{{(plant_data["org"]).org_name}}</td>
+        <td>{{(plant_data["region"]).region_name}}</td>
+        <td>
+            <a href="/plant/{{plant['plant_id']}}/update" type="button">Update</a>
+            <a href="/plant/{{plant['plant_id']}}/delete" type="button">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+    <a href="/plant/create" type="button">+ Add Plants</a>
+    {% endif %}
+    <br>
+    <a href="/">Go Back to Home</a>
+  </body>
+</html>
