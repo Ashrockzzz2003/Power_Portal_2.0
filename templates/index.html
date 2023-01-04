@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Power Portal | Home</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="../static/index.css" />
+
+    <!--Google Charts-->
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+    <script type="text/javascript">
+      google.charts.load("current", {
+        packages: ["geochart"],
+      });
+      google.charts.setOnLoadCallback(drawRegionsMap);
+
+      function drawRegionsMap() {
+        var data = google.visualization.arrayToDataTable([
+          ["State_id", "State", "Capacity(MW)"],
+          ["IN-AR", "Arunachal Pradesh", 34],
+          ["IN-AS", "Assam", 13],
+          ["IN-BR", "Bihar", 65],
+          ["IN-CH", "Chandigarh", 15],
+          ["IN-CT", "Chhattisgarh", 34],
+          ["IN-DN", "Dadra and Nagar Haveli", 34],
+          ["IN-DD", "Daman and Diu", 45],
+          ["IN-DL", "Delhi", 34],
+          ["IN-GA", "Goa", 76],
+          ["IN-GJ", "Gujarat", 34],
+          ["IN-HR", "Haryana", 14],
+          ["IN-HP", "Himachal Pradesh", 75],
+          ["IN-JK", "Jammu and Kashmir", 34],
+          ["IN-JH", "Jharkhand", 34],
+          ["IN-KA", "Karnataka", 26],
+          ["IN-KL", "Kerala", 4],
+          ["IN-LA", "Ladakh", 16],
+          ["IN-TN", "Tamil Nadu", 34],
+          ["IN-TG", "Telangana", 34],
+          ["IN-TR", "Tripura", 34],
+          ["IN-UP", "Uttar Pradesh", 34],
+        ]);
+
+        var options = {
+          region: "IN",
+          resolution: "provinces",
+          colorAxis: { colors: ["orange", "blue", "red", "pink"] },
+        };
+
+        var chart = new google.visualization.GeoChart(
+          document.getElementById("regions_div")
+        );
+
+        chart.draw(data, options);
+      }
+    </script>
+    <script type="text/javascript">
+      google.charts.load("current", { packages: ["corechart"] });
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable(
+        );
+
+        var options = {
+          title: "Resource wise Installed Capacity",
+          titleTextStyle: { color: "white", fontSize: 32 },
+          is3D: true,
+          backgroundColor: "black",
+          enableInteractivity: true,
+          fontName: "Poppins",
+          legend: { textStyle: { color: "white" } },
+        };
+
+        var chart = new google.visualization.PieChart(
+          document.getElementById("resource_data")
+        );
+        chart.draw(data, options);
+      }
+    </script>
+    <script type="text/javascript">
+      google.charts.load("current", { packages: ["corechart"] });
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ["Demand(MW)", "Capacity"],
+          ["Peak Requirement", 174153.0],
+          ["Peak Demand Met", 172820.0],
+          ["Shortage/Surplus", 1333.0],
+        ]);
+
+        var options = {
+          title: "Daily Demand",
+          titleTextStyle: { color: "white", fontSize: 32 },
+          backgroundColor: "black",
+          enableInteractivity: true,
+          fontName: "Poppins",
+          legend: { textStyle: { color: "white" } },
+          animation: { startup: true },
+          hAxis: { textStyle: { color: "white" } },
+          vAxis: { textStyle: { color: "white" } },
+        };
+
+        var chart = new google.visualization.BarChart(
+          document.getElementById("daily_demand")
+        );
+        chart.draw(data, options);
+      }
+    </script>
+
+<script>
+    google.charts.load("current", { packages: ["corechart", "line"] });
+    google.charts.setOnLoadCallback(drawBasic);
+
+    function drawBasic() {
+      var data = new google.visualization.DataTable();
+      data.addColumn("number", "X");
+      data.addColumn("number", "Installed Capacity (MW)");
+
+      data.addRows(
+      );
+
+      var options = {
+        title: "Hydro",
+        titleTextStyle: { color: "white", fontSize: 16 },
+        backgroundColor: "black",
+        enableInteractivity: true,
+        fontName: "Poppins",
+        legend: { textStyle: { color: "white" } },
+        animation: { startup: true },
+        vAxis: {
+          title: "Installed Capacity (MW)",
+          textStyle: { color: "white" },
+        },
+        hAxis: {
+          title: "Hydro",
+          textStyle: { color: "white" },
+        },
+      };
+
+      var chart = new google.visualization.LineChart(
+        document.getElementById("chart_div_1")
+      );
+
+      chart.draw(data, options);
+    }
+  </script>
+
+    <script>
+      google.charts.load("current", { packages: ["corechart", "line"] });
+      google.charts.setOnLoadCallback(drawBasic);
+
+      function drawBasic() {
+        var data = new google.visualization.DataTable();
+        data.addColumn("number", "X");
+        data.addColumn("number", "Installed Capacity (MW)");
+
+        data.addRows(
+        );
+
+        var options = {
+          title: "Thermal",
+          titleTextStyle: { color: "white", fontSize: 16 },
+          backgroundColor: "black",
+          enableInteractivity: true,
+          fontName: "Poppins",
+          legend: { textStyle: { color: "white" } },
+          animation: { startup: true },
+          vAxis: {
+            title: "Installed Capacity (MW)",
+            textStyle: { color: "white" },
+          },
+          hAxis: {
+            title: "Thermal",
+            textStyle: { color: "white" },
+          },
+        };
+
+        var chart = new google.visualization.LineChart(
+          document.getElementById("chart_div")
+        );
+
+        chart.draw(data, options);
+      }
+    </script>
+
+    <script>
+      google.charts.load("current", { packages: ["corechart", "line"] });
+      google.charts.setOnLoadCallback(drawBasic);
+
+      function drawBasic() {
+        var data = new google.visualization.DataTable();
+        data.addColumn("number", "X");
+        data.addColumn("number", "Installed Capacity (MW)");
+
+        data.addRows(
+        );
+
+        var options = {
+          title: "Nuclear",
+          titleTextStyle: { color: "white", fontSize: 16 },
+          backgroundColor: "black",
+          enableInteractivity: true,
+          fontName: "Poppins",
+          legend: { textStyle: { color: "white" } },
+          animation: { startup: true },
+          vAxis: {
+            title: "Installed Capacity (MW)",
+            textStyle: { color: "white" },
+          },
+          hAxis: {
+            title: "Nuclear",
+            textStyle: { color: "white" },
+          },
+        };
+
+        var chart = new google.visualization.LineChart(
+          document.getElementById("chart_div_2")
+        );
+
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    <nav>
+      <ul class="menu-bar">
+        <div class="logo">
+          <a href="/"> <i class="material-icons">bolt</i>Power Portal </a>
+        </div>
+        <li><a href="/">Home</a></li>
+        <li><a href="/add_data">Add Data</a></li>
+      </ul>
+    </nav>
+
+    <div class="container">
+      <div class="chip_list">
+        {% for resource in resource_list %}
+            <div class="chip_item">
+                <h3>{{resource['resource_type']}}</h3>
+                <p>{{ resource['capacity']}} MW</p>
+            </div>
+        {% endfor %}
+      </div>
+
+      <br />
+      <br />
+      <table>
+        <tr>
+          <td>
+            <div id="resource_data" style="width: 500px; height: 600px"></div>
+            <div id="daily_demand" style="width: 500px; height: 400px"></div>
+          </td>
+          <td class="res_dat">
+            <h1 style="color: white; font-size: 32px">
+              Electricity Generation through Renewable Resources in India
+            </h1>
+            <div
+              id="regions_div"
+              style="
+                width: 700px;
+                height: 700px;
+                border-radius: 32px;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+              "
+            ></div>
+          </td>
+        </tr>
+      </table>
+
+      <div class="history">
+        <h1 style="color: white; text-align: center">
+          Historical Data: Growth of Installed Capacity of India
+        </h1>
+        <table style="margin-left: auto; margin-right: auto">
+          <tr>
+            <td>
+              <div id="chart_div" style="width: 450px"></div>
+            </td>
+            <td>
+              <div id="chart_div_1" style="width: 450px"></div>
+            </td>
+            <td>
+              <div id="chart_div_2" style="width: 450px"></div>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

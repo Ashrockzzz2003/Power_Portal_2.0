@@ -1,0 +1,262 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&family=Poppins:wght@300&display=swap');
+
+html{
+    scroll-behavior: smooth;
+}
+
+html{
+    background-color: none;
+    position: relative;
+    -webkit-animation-name: animatebottom;
+    -webkit-animation-duration: 1s;
+    animation-name: animatebottom;
+    animation-duration: 1s;
+}
+
+@-webkit-keyframes animatebottom {
+    from { bottom:-100px; opacity:0 }
+    to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom { 
+    from{ bottom:-100px; opacity:0 } 
+    to{ bottom:0; opacity:1 }
+}
+
+body{
+    font-family: "Poppins", "Open Sans", sans-serif;
+  background-color: black;
+  color: white;
+  background: url(https://wallpaperaccess.com/full/979151.jpg) center / cover
+    no-repeat;
+  background-attachment: fixed;
+  height: 100vh;
+  margin: 0;
+  text-align: center;
+}
+
+.logo{
+    border-radius: 25px;
+    height: fit-content;
+    display: inline-flex;
+    background-color: rgba(0,0,0,0.4);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    align-items: center;
+    vertical-align: middle;
+    padding: 12px 16px;
+    margin: 0 8px;
+    top: 0;
+    color: white;
+    transition: all .2s;
+}
+
+.logo a{
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+.logo i{
+    vertical-align: middle;
+    text-decoration: none;
+    font-size: xx-large;
+    background-image: linear-gradient(315deg, #17f9f2 40%, #b0f9a9 74%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 200ms ease-in;
+    border-radius: 50%;
+    padding-right: 10px;
+    position: relative;
+}
+
+.logo:hover{
+    background: white;
+    font-weight: bold;
+    box-shadow: 0px 3px 20px 0px black;
+    transform: scale(1.1);
+    color: black;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.logo a:hover{
+    color: black;
+}
+
+.menu-bar{
+    border-radius: 25px;
+    height: fit-content;
+    display: inline-flex;
+    background-color: rgba(0,0,0,0.4);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    align-items: center;
+    padding: 0 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    top: 0;
+}
+
+.menu-bar li{
+    list-style: none;
+    color: white;
+    padding: 12px 16px;
+    margin: 0 8px;
+    position: relative;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .2s;
+}
+
+.menu-bar li a{
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.menu-bar li:hover{
+    background: white;
+    font-weight: bolder;
+    box-shadow: 0px 3px 20px 0px black;
+    transform: scale(1.2);
+    color: black;
+    border-radius: 25px;
+}
+
+.menu-bar a:hover{
+    color: black;
+    font-weight: bolder;
+}
+
+.btn-primary {
+    font-family: 'Poppins', 'Open Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: white;
+    background: #2563EB;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 200ms ease-in;
+}
+  
+.btn-primary:hover {
+    background: #1D4ED8;
+}
+
+/*Main Content Starts*/
+
+.chip_list{
+    display: flex;
+    justify-content: center;
+}
+
+.chip_item{
+    text-align: center;
+    background-color: #EADDFF;
+    padding: 8px;
+    margin: 5px; 
+    border-radius: 16px 32px;
+    transition: all 0.2s ease-in-out;
+}
+
+.chip_item:hover{
+    cursor: pointer;
+    border-radius: 32px 16px;
+    transform: scale(1.05);
+}
+
+.chip_item h3{
+    color: #21005D;
+}
+
+.chip_item p{
+    background-color: #1D192B;
+    color: #E8DEF8;
+    border-radius: 16px;
+    padding: 8px;
+}
+
+#resource_data, .res_dat, #daily_demand, #chart_div, #chart_div_1, #chart_div_2{
+    text-align: center;
+    border: white solid 2px;
+    padding: 8px;
+    margin: 5px;
+    border-radius: 32px;
+    transition: all 0.2s ease-in-out;
+}
+
+#resource_data:hover, .res_dat:hover, #daily_demand:hover, #chart_div:hover, #chart_div_1:hover, #chart_div_2:hover{
+    cursor: pointer;
+    border-radius: 15px;
+}
+
+.container{
+    color: white;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 25px;
+	background-color: rgba(0, 0, 0, .4);
+	-webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+	height: fit-content;
+    text-align: center;
+    padding: 5px;
+}
+
+.container h1{
+    font-size: 3.5rem;
+    background-image: linear-gradient(315deg, #17f9f2 40%, #b0f9a9 74%);
+    /*background: -webkit-linear-gradient(45deg, #09009f, #00ff95 80%);*/
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.container h2{
+    font-size: 2.5rem;
+    background-image: linear-gradient(315deg, #17f9f2 40%, #b0f9a9 74%);
+    /*background: -webkit-linear-gradient(45deg, #09009f, #00ff95 80%);*/
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.container p{
+    font-size: x-large;
+}
+
+.link{
+    color: white;
+    margin: 0 8px;
+    position: relative;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .2s;
+    padding: 12px 16px;
+}
+
+.link a{
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all .2s;
+    padding: 12px 16px;
+}
+
+.link:hover{
+    transform: scale(1.2);
+}
+
+.link a:hover{
+    background: white;
+    font-weight: bolder;
+    box-shadow: 0px 3px 20px 0px black;
+    color: black;
+    border-radius: 25px;
+}
