@@ -54,7 +54,7 @@ CREATE TABLE "sector" (
 )
 """
 class Sector(db.Model):
-    __tablename__ = "sectors"
+    __tablename__ = "sector"
     sector_id = db.Column(db.Integer, autoincrement = True, primary_key = True, unique = True, nullable = False)
     sector_name = db.Column(db.String, nullable = False, unique = True)
 
@@ -72,7 +72,7 @@ class Organizations(db.Model):
     org_id = db.Column(db.Integer, autoincrement = True, primary_key = True, unique = True, nullable = False)
     org_name = db.Column(db.String, nullable = False, unique = True)
     state_id = db.Column(db.Integer, db.ForeignKey("states.state_id"), nullable = False)
-    sector_id = db.Column(db.integer, db.ForeignKey("sector.sector_id"), nullable = False)
+    sector_id = db.Column(db.Integer, db.ForeignKey("sector.sector_id"), nullable = False)
 
 @app.route("/", methods = ["GET", "POST"])
 def index():
@@ -267,8 +267,88 @@ def delete_resource(resource_id):
 
 @app.route("/sector", methods = ["GET", "POST"])
 def view_sector():
-    
-    return
+    sector_list = Sector.query.all()
+    return render_template(
+        "view_sector.html",
+        sector_list = sector_list
+    )
+
+@app.route("/sector/create", methods = ["GET", "POST"])
+def create_sector():
+    if request.method == "GET":
+        return render_template("create_sector.html")
+    elif request.method == "POST":
+        sector_name = request.form.get("sector_name")
+
+        data = Sector(
+            sector_name = sector_name
+        )
+
+        try:
+            db.session.add(data)
+        except:
+            db.session.rollback()
+            return render_template(
+                "exists.html",
+                x = "Sector"
+            )
+        else:
+            db.session.commit()
+            return redirect("/sector")
+
+@app.route("/sector/<int:sector_id>/update", methods = ["GET", "POST"])
+def update_sector(sector_id):
+    try:
+        sector_id = int(sector_id)
+        old_data = Sector.query.get(sector_id)
+
+        if request.method == "GET":
+            return render_template(
+                "update_sector.html",
+                sector_id = sector_id,
+                sector_name = old_data.sector_name
+            )
+        elif request.method == "POST":
+            u_sector_name = request.form.get("sector_name")
+
+            # Update data
+            old_data.sector_name = u_sector_name
+
+            try:
+                db.session.add(old_data)
+            except:
+                db.session.rollback()
+                return render_template(
+                    "error.html"
+                )
+            else:
+                db.session.commit()
+    except:
+        return render_template(
+            "error.html"
+        )
+    else:
+        return redirect("/sector")
+
+@app.route("/sector/<int:sector_id>/delete", methods = ["GET", "POST"])
+def delete_sector(sector_id):
+    try:
+        sector_id = int(sector_id)
+        data = Sector.query.get(sector_id)
+        try:
+            db.session.delete(data)
+        except:
+            return render_template(
+                "error.html"
+            )
+        else:
+            db.session.commit()
+            return redirect("/sector")
+
+    except:
+        return render_template(
+            "error.html"
+        )
 
 @app.route("/organization", methods = ["GET", "POST"])
 def view_organization():
