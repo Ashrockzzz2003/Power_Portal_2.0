@@ -164,6 +164,10 @@ class DailyReading(db.Model):
 
 @app.route("/", methods = ["GET", "POST"])
 def index():
+    demand = db.session.execute("SELECT AVG(demand) FROM daily_demand").first()[0]
+    supply = db.session.execute("SELECT AVG(energy_generated) FROM daily_reading").first()[0]
+
+
     source = [
         ["State_id", "State", "Capacity(MW)"],
         ['IN-AP', 'Andhra Pradesh'],
@@ -229,7 +233,9 @@ def index():
         resource_data = resource_data,
         hydro_data = hydro_data,
         thermal_data = thermal_data,
-        nuclear_data = nuclear_data
+        nuclear_data = nuclear_data,
+        demand = demand,
+        supply = supply
     )
 
 @app.route("/login", methods = ["GET", "POST"])

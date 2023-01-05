@@ -70,9 +70,9 @@
       function drawChart() {
         var data = google.visualization.arrayToDataTable([
           ["Demand(MW)", "Capacity"],
-          ["Peak Requirement", 174153.0],
-          ["Peak Demand Met", 151820.0],
-          ["Shortage/Surplus", (174153-151820)],
+          ["Peak Requirement", {{demand | safe}}],
+          ["Peak Demand Met", {{supply | safe}}],
+          ["Shortage/Surplus", {{(demand - supply) | abs | safe}}],
         ]);
 
         var options = {
