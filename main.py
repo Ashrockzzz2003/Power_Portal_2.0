@@ -210,7 +210,7 @@ def index():
         ['IN-PY', 'Puducherry']
     ]
 
-    map_data = [["State_id", "State", "Sector", "Capacity(MW)"]]
+    map_data = [["State_id", "State", "Capacity(MW)"]]
     
 
     for i in range(1, len(source)):
