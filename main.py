@@ -10,12 +10,12 @@ current_dir = os.path.abspath(os.path.dirname(__file__))
 
 # Config
 app = Flask(__name__, template_folder='templates')
+"""
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
 """
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + os.path.join(
     current_dir, "database.db"
 )
-"""
 db = SQLAlchemy()
 db.init_app(app)
 app.app_context().push()
