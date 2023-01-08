@@ -297,7 +297,15 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
 
-        if username == "admin" and password == "nppadmin":
+        validate_data = db.session.execute(
+            f"""
+                SELECT user_name, password
+                FROM admin
+                WHERE user_name = '{username}' AND password = '{password}'
+            """
+        ).first()
+
+        if validate_data is not None:
             return redirect("/state")
         else:
             return render_template(
