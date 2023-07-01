@@ -2,20 +2,19 @@ from flask import Flask, redirect
 from flask import render_template
 from flask import request
 from flask_sqlalchemy import SQLAlchemy
-import os
+from sqlalchemy.sql import text
 import random
 
 # Get Directory for db
-current_dir = os.path.abspath(os.path.dirname(__file__))
+# current_dir = os.path.abspath(os.path.dirname(__file__))
 
 # Config
 app = Flask(__name__, template_folder='templates')
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///database.db"
-"""
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + os.path.join(
-    current_dir, "database.db"
-)
-"""
+
+# app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///" + os.path.join(
+#     current_dir, "database.db"
+# )
 db = SQLAlchemy()
 db.init_app(app)
 app.app_context().push()
@@ -167,8 +166,8 @@ class DailyReading(db.Model):
 
 @app.route("/", methods = ["GET", "POST"])
 def index():
-    demand = db.session.execute("SELECT AVG(demand) FROM daily_demand").first()[0]
-    supply = db.session.execute("SELECT AVG(energy_generated) FROM daily_reading").first()[0]
+    demand = db.session.execute(text("SELECT AVG(demand) FROM daily_demand")).first()[0]
+    supply = db.session.execute(text("SELECT AVG(energy_generated) FROM daily_reading")).first()[0]
 
     source = [
         ["State_id", "State", "Capacity(MW)"],
@@ -219,7 +218,7 @@ def index():
         FROM states
         WHERE state_name = '{(source[i])[1]}'
         """
-        exists = (db.session.execute(query).first())
+        exists = (db.session.execute(text(query)).first())
         if(exists is not None):
             s_query = f"""
             SELECT SUM(dr.energy_generated)
@@ -238,7 +237,7 @@ def index():
                 )
             )
             """
-            se_data = (db.session.execute(s_query)).first()[0]
+            se_data = (db.session.execute(text(s_query))).first()[0]
 
             if se_data is None:
                 map_data.append([source[i][0], source[i][1], 0])
@@ -260,7 +259,7 @@ def index():
         )
         """
 
-        capacity = db.session.execute(query).first()[0]
+        capacity = db.session.execute(text(query)).first()[0]
         if(capacity is None):
             resource_data.append([resource.resource_type, 0])
         else:
@@ -298,11 +297,11 @@ def login():
         password = request.form.get("password")
 
         validate_data = db.session.execute(
-            f"""
+            text(f"""
                 SELECT user_name, password
                 FROM admin
                 WHERE user_name = '{username}' AND password = '{password}'
-            """
+            """)
         ).first()
 
         if validate_data is not None:
